@@ -124,9 +124,16 @@ while True:
 
 #get primary rhythms input
 
-durations = get_valid_durations()
+relative_durations = get_relative_durations()
 
-print "\n" + string.center(" Primary Rhythms (Duration Sets) ", width, "~")
+options = []
+for key, item in relative_durations.iteritems():
+	print key
+	options.append(key)
+options.sort()
+
+
+print "\n" + string.center(" Primary Rhythms ", width, "~")
 
 while True:
 
@@ -136,16 +143,24 @@ while True:
 
 	while True:
 
-		print "\nBase values:" + str(durations['base'])
+		print "\nBase values:" + str(relative_durations['base'])
 
 		raw = raw_input("\nEnter base value " + str(len(rhythm)) + ": ")
 		temp = float(raw)
 
 		
-		if(is_valid_duration(temp)):
-			print "\nvalid duration"
+		if(temp in value.base_values):
+			print "\nOptions:"
+			"""
+			for key, item in relative_durations.iteritems():
+				print string.ljust(key, 15)
+			"""
+			for index, item in enumerate(options):
+				print string.ljust(str(index), 5) + string.ljust(item, 15)
+			raw = raw_input("\nSelect an option: ")
+
 		else:
-			print "\ninvalid duration"
+			print "\nInvalid duration"
 			continue
 
 		#continue or break?

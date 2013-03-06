@@ -1,27 +1,27 @@
 import mingus.core.value as value
 
-def get_valid_durations():
+def get_relative_durations():
 	
-	valid_durations = 	{'base': [], 'triplet': [], 'quintuplet': [], 'septuplet': [],
-						'single-dotted': [], 'double-dotted': [], 'triple-dotted': []}
+	relative_durations = 	{'base-value': [], 'tuplet-3': [], 'tuplet-5': [], 'tuplet-7': [],
+							'dotted-1': [], 'dotted-2': [], 'dotted-3': []}
 
-	valid_durations['base'].extend(value.base_values)
-	valid_durations['triplet'].extend(value.base_triplets)
-	valid_durations['quintuplet'].extend(value.base_quintuplets)
-	valid_durations['septuplet'].extend(value.base_septuplets)
+	relative_durations['base-value'].extend(value.base_values)
+	relative_durations['tuplet-3'].extend(value.base_triplets)
+	relative_durations['tuplet-5'].extend(value.base_quintuplets)
+	relative_durations['tuplet-7'].extend(value.base_septuplets)
 
 	for item in value.base_values:
-		valid_durations['single-dotted'].append(value.dots(item))
-		valid_durations['double-dotted'].append(value.dots(item, 2))
-		valid_durations['triple-dotted'].append(value.dots(item, 3))
+		relative_durations['dotted-1'].append(value.dots(item))
+		relative_durations['dotted-2'].append(value.dots(item, 2))
+		relative_durations['dotted-3'].append(value.dots(item, 3))
 
-	return valid_durations
+	return relative_durations
 
-def is_valid_duration(duration):
+def is_in_relative_durations(val):
 
-	for key, item in get_valid_durations().iteritems():
-		for value in item:
-			if duration == value:
+	for key, item in get_relative_durations().iteritems():
+		for element in item:
+			if val == element:
 				return True
 	return False
 
