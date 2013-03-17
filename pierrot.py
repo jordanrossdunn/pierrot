@@ -5,11 +5,12 @@ from pcsets.pcops 	import *
 from pcsets.catalog import *
 from pcsets.noteops import *
 
-import mingus.core.value as value
+import mingus.core.value
 
 from rhythms import *
 
 import string
+
 from fractions import Fraction
 
 #def main():
@@ -107,7 +108,7 @@ while True:
 	#display current primary set collection data
 	print "\n" + string.ljust("#", 5) + string.ljust("Normal Form", 25),
 	print string.ljust("Prime Form", 25) + string.ljust("Interval Vector", 25)
-	print "-" * int(width)
+	print "~" * int(width)
 	for index, item in enumerate(primary_pc_sets):
 		print string.ljust(str(index), 5) + string.ljust(str(item), 25),
 		print string.ljust(str(item.prime()), 25) + string.ljust(str(item.ivec()), 25)
@@ -141,65 +142,90 @@ while True:
 
 	rhythm = []
 
-	print "\nRhythm " + str(len(primary_rhythms)) + ":"
+	#print "\nRhythm " + str(len(primary_rhythms)+1) + ":"
 
 	while True:
 
+		if len(rhythm) > 0:
+			#print rhythm progress
+			print "\nRhythm " + str(len(primary_rhythms)) + ":"
+			print "~" * int(width)
+			for item in rhythm[:-1]:
+				print str(item) + ",",
+			print str(rhythm[-1])
+
 		#select a base value
-		print "\nBase note values: "
+		#print "\nBase note values: "
 		print "\n" + string.ljust("#", 5) + string.ljust("Value", 15)
-		print "-" * int(width)
-		for index, item in enumerate(value.base_values):
+		print "~" * int(width/8)
+		for index, item in enumerate(mingus.core.value.base_values):
 			value_as_ratio = str(Fraction(1.0/item))
 			print string.ljust(str(index), 5) + string.ljust(value_as_ratio, 15)
 
 		index = raw_input("\nSelect value " + str(len(rhythm)) + ": ")
-		if(int(index) in range(len(value.base_values))):
-			val = value.base_values[int(index)]
+		if(int(index) in range(len(mingus.core.value.base_values))):
+			value = mingus.core.value.base_values[int(index)]
 		else:
 			print "\nInvalid selection"
 			continue
 		
 		#select an action
-		base_index = value.base_values.index(val)
-		print "\nActions:"
+		base_index = mingus.core.value.base_values.index(value)
+		#print "\nActions:"
 		print "\n" + string.ljust("#", 5) + string.ljust("Action", 15)
-		print "-" * int(width)
+		print "~" * int(width/4)
 		for index, item in enumerate(actions):
 			print string.ljust(str(index), 5) + string.ljust(item, 15) 
 		
 		action = raw_input("\nSelect an action: ")
 		while int(action) not in range(len(actions)):
 			action = raw_input("\nSelect an action: ")
+		action = int(action)
 
 		#option actions
 		if   action == 0:
 			#use base value
-			print "Action " + str(action)
+			rhythm.append(new_unit(value))
 		elif action == 1:
 			#make single dotted
-			print "Action " + str(action)
+			rhythm.append(new_unit(mingus.core.value.dots(value)))
 		elif action == 2:
 			#make double dotted
-			print "Action " + str(action)
+			rhythm.append(new_unit(mingus.core.value.dots(value, 2)))
 		elif action == 3:
 			#make triple dotted
-			print "Action " + str(action)
+			rhythm.append(new_unit(mingus.core.value.dots(value, 3)))
 		elif action == 4:
 			#make triplet
-			print "Action " + str(action)
+			for count in range(3):
+				print str(count+1) + "/3:",
+				rhythm.append(new_unit(mingus.core.value.base_triplets[base_index]))
 		elif action == 5:
 			#make quintuplet
-			print "Action " + str(action)
+			for count in range(5):
+				print str(count+1) + "/5:",
+				rhythm.append(new_unit(mingus.core.value.base_quintuplets[base_index]))
 		elif action == 6:
 			#make septuplet
-			print "Action " + str(action)
+			for count in range(7):
+				print str(count+1) + "/7:",
+				rhythm.append(new_unit(mingus.core.value.base_septuplets[base_index]))
 
 		#continue or break?
 		again = raw_input("\nEnter another value? (y/n): ")
 		while again != "y" and again != "n":
 			again = raw_input("\nEnter another value? (y/n): ")
 		if again == 'n':
+			#rhythm construction complete
+			primary_rhythms.append(rhythm)
+			rhythm = []
+			#print primary_rhythms
+			for index, primary_rhythm in enumerate(primary_rhythms):
+				print "\nPrimary Rhythm " + str(index) + ":"
+				print "~" * int(width)
+				for item in primary_rhythm[:-1]:
+					print str(item) + ",",
+				print str(primary_rhythm[-1])
 			break
 		else:
 			continue
