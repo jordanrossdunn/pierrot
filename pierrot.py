@@ -10,7 +10,8 @@ import mingus.core.value
 import string
 from fractions import Fraction
 
-from rhythms import *
+from rhythms 		import *
+from instruments	import *
 
 """documentatioin/summary"""
 
@@ -28,7 +29,7 @@ print "\n"
 print "=" * width
 print string.center(" Welcome to Pierrot ", width, "|")
 #print "\n"
-print "~" * width
+print "=" * width
 
 print "\nWhat are the materials for the composition?"
 
@@ -110,7 +111,7 @@ while True:
 	# display current primary set collection data
 	print "\n" + string.ljust("#", 5) + string.ljust("Normal Form", 25),
 	print string.ljust("Prime Form", 25) + string.ljust("Interval Vector", 25)
-	print "~" * int(width)
+	print "-" * int(width)
 	for index, item in enumerate(primary_pc_sets):
 		print string.ljust(str(index+1), 5) + string.ljust(str(item), 25),
 		print string.ljust(str(item.prime()), 25) + string.ljust(str(item.ivec()), 25)
@@ -151,14 +152,14 @@ while True:
 		if len(rhythm) > 0:
 			# print rhythm progress
 			print "\nRhythm " + str(len(primary_rhythms)+1) + ":"
-			print "~" * int(width)
+			print "-" * int(width)
 			for item in rhythm[:-1]:
 				print str(item) + ",",
 			print str(rhythm[-1])
 
 		# select a base value
 		print "\n" + string.ljust("#", 5) + string.ljust("Value", 15)
-		print "~" * int(width/8)
+		print "-" * int(width/3)
 		for index, item in enumerate(mingus.core.value.base_values):
 			value_as_ratio = str(Fraction(1.0/item))
 			print string.ljust(str(index+1), 5) + string.ljust(value_as_ratio, 15)
@@ -173,7 +174,7 @@ while True:
 		# select an action
 		base_index = mingus.core.value.base_values.index(value)
 		print "\n" + string.ljust("#", 5) + string.ljust("Action", 15)
-		print "~" * int(width/4)
+		print "-" * int(width/3)
 		for index, item in enumerate(actions):
 			print string.ljust(str(index+1), 5) + string.ljust(item, 15) 
 		
@@ -223,7 +224,7 @@ while True:
 			# print primary_rhythms
 			for index, primary_rhythm in enumerate(primary_rhythms):
 				print "\nPrimary Rhythm " + str(index+1) + ":"
-				print "~" * int(width)
+				print "-" * int(width)
 				for item in primary_rhythm[:-1]:
 					print str(item) + ",",
 				print str(primary_rhythm[-1])
@@ -246,11 +247,70 @@ while True:
 
 print "\n" + string.center(" Instrumentation ", width, "~")
 
+while True:
+
+	key  = []
+	keys = []
+
+	# select instrument category
+	print "\n" + string.ljust("#", 5) + string.ljust("Category", 15)
+	print "-" * int(width/3)
+	for index, title in enumerate(get_instrument_categories()):
+		print string.ljust(str(index+1), 5) + string.ljust(title, 15)
+		keys.append(title)
+
+	selection = raw_input("\nSelect a category: ")
+	while (not selection.isdigit()) or (int(selection)-1 not in range(len(get_instrument_categories()))):
+		selection = raw_input("Select a category: ")
+	key.append(keys[int(selection)-1])
+	category = instruments[key[0]]
+
+	keys = []
+
+	# select instrument family
+	print "\n" + string.ljust("#", 5) + string.ljust("Family", 15)
+	print "-" * int(width/3)
+	for index, family in enumerate(get_instrument_families(category)):
+		print string.ljust(str(index+1), 5) + string.ljust(family, 15)
+		keys.append(family)
+
+	selection = raw_input("\nSelect a family: ")
+	while (not selection.isdigit()) or (int(selection)-1 not in range(len(get_instrument_families(category)))):
+		selection = raw_input("Select a family: ")
+	key.append(keys[int(selection)-1])
+	family = instruments[key[0]][key[1]]
+
+	print "\n" + str(key[0]) + ":\n"
+	print_instrument_family(family)
+
+	# select instrument
+	selection = raw_input("\nSelect an instrument: ")
+	while (not selection.isdigit()) or (int(selection)-1 not in range(len(family))):
+		selection = raw_input("Select an instrument: ")
+	selection = int(selection)-1
+
+	instrument = family[selection]
+
+	ensemble.append(instrument)
+
+	print "\nEnsemble:\n"
+	print string.ljust('#', 5) + string.ljust('Name', 20) + string.ljust('Key', 10) + string.ljust('Range', 15)
+	print '-' * 50
+	for index, instr in enumerate(ensemble):
+		print string.ljust(str(index+1), 5) + string.ljust(instr.name, 20) + string.ljust(instr.key, 10) + string.ljust(str(instr.range), 15)
+
+
+	# notes:
+	# need to add an option to start selection over!!!
+	# for multiple instrument additions check that families are not repeated?
+	
+	#again = raw_input("\nAdd another instrument? (y/n): ")
+	break
 
 ##################################################
 
-#print "\nDevelopment/Variation"
+# to be added later: basic parameter input (tempo, space, ...), and shape/form input section  
 
 ##################################################
 
-#generate midi file
+# compose and generate midi file

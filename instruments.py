@@ -24,12 +24,10 @@ def print_instrument_family(family):
 	additional attribute 'key' and prints their attribute (with the exception of 'clef') values 
 	in string formated table."""
 
-	print string.ljust('Name', 25) + string.ljust('Key', 10) + string.ljust('Range', 15)
+	print string.ljust('#', 5) + string.ljust('Name', 20) + string.ljust('Key', 10) + string.ljust('Range', 15)
 	print '-' * 50
-	for instr in family:
-		assert isinstance(family[0], Instrument)
-		print string.ljust(instr.name, 25) + string.ljust(instr.key, 10) + string.ljust(str(instr.range), 15)
-	#print '-' * 50
+	for index, instr in enumerate(family):
+		print string.ljust(str(index+1), 5) + string.ljust(instr.name, 20) + string.ljust(instr.key, 10) + string.ljust(str(instr.range), 15)
 
 def print_instruments():
 
@@ -38,6 +36,15 @@ def print_instruments():
 		for name, family in category.iteritems():
 			print "\n" + string.center(" " + name + " ", 50, "-") + "\n"
 			print_instrument_family(family)
+
+def get_instrument_families(category):
+
+	families = []
+	
+	for name, family in category.iteritems():
+		families.append(name)
+
+	return families
 
 def get_instrument_categories():
 
@@ -91,6 +98,40 @@ def Alto_Saxophone():
 	return instr
 
 saxophones.append(Alto_Saxophone())
+
+##################################################
+# flutes
+
+def Flute():
+	"""Returns a mingus.containers.Instrument with attributes assigned for a Flute provided with 
+	an additional attribute 'key'."""
+
+	instr = Instrument()
+	instr.name = 'Flute'
+	instr.key  = 'C'
+	instr.clef = 'Treble'
+	instr.set_range(tuple([Note('C', 3), Note('C', 7)]))
+	return instr
+
+flutes.append(Flute())
+
+##################################################
+# violins
+
+def Violin():
+	"""Returns a mingus.containers.Instrument with attributes assigned for a Violin provided with 
+	an additional attribute 'key'."""
+
+	instr = Instrument()
+	instr.name = 'Violin'
+	instr.key  = 'C'
+	instr.clef = 'Treble'
+	instr.set_range(tuple([Note('G', 3), Note('C', 8)]))
+	return instr
+
+violins.append(Violin())
+
+##################################################
 
 ##################################################
 # instruments
