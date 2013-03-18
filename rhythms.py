@@ -65,9 +65,9 @@ class Unit():
 						key = " " + key
 					return str(Fraction(1.0/mingus.core.value.base_values[index])) + " note" + key + message
 
-def new_unit(value):
+def new_unit(opening, value):
 		assert is_in_values(value)
-		prompt = "Make this a rest? (y/n): "
+		prompt = str(opening) + "Make this a rest? (y/n): "
 		resp = raw_input(prompt)
 		while resp is not 'y' and resp is not 'n':
 			resp = raw_input(prompt)
