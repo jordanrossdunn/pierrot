@@ -2,28 +2,29 @@ import mingus.containers.Instrument as Instrument
 import mingus.containers.Note as Note
 import string
 
-# instrument categories
+#--------------------------------------------------
+
+# instrument categories:
 woodwinds = {}
 strings = {}
 
-# instrument families
-# woodwinds
+# instrument families:
+
+# woodwinds:
 clarinets = []
 saxophones = []
 flutes = []
-# strings
+
+# strings:
 violins = []
 
-# all intruments (by category and family)
+# all intruments (by category and family):
 instruments = {}
 
-##################################################
+#--------------------------------------------------
 
 def print_instrument_family(family):
-	"""Takes an array of extended mingus.containers.Instrument instruments each provided with an 
-	additional attribute 'key' and prints their attribute (with the exception of 'clef') values 
-	in string formated table."""
-
+	
 	print string.ljust('#', 5) + string.ljust('Name', 20) + string.ljust('Key', 10) + string.ljust('Range', 15)
 	print '-' * 50
 	for index, instr in enumerate(family):
@@ -37,31 +38,27 @@ def print_instruments():
 			print "\n" + string.center(" " + name + " ", 50, "-") + "\n"
 			print_instrument_family(family)
 
+#--------------------------------------------------
+
 def get_instrument_families(category):
 
 	families = []
-	
 	for name, family in category.iteritems():
 		families.append(name)
-
 	return families
 
 def get_instrument_categories():
 
 	categories = []
-
 	for title, category in instruments.iteritems():
 		categories.append(title)
-
 	return categories
 
-##################################################
-# clarinets
+#--------------------------------------------------
+# clarinets:
 
 def Soprano_Clarinet():
-	"""Returns a mingus.containers.Instrument with attributes assigned for a Bb Soprano Clarinet 
-	provided with an additional attribute 'key'."""
-
+	
 	instr = Instrument()
 	instr.name = 'Soprano Clarinet'
 	instr.key  = 'Bb'
@@ -70,8 +67,6 @@ def Soprano_Clarinet():
 	return instr
 
 def Bass_Clarinet():
-	"""Returns a mingus.containers.Instrument with attributes assigned for a Bb Bass Clarinet 
-	provided with an additional attribute 'key'."""
 
 	instr = Instrument()
 	instr.name = 'Bass Clarinet'
@@ -83,13 +78,11 @@ def Bass_Clarinet():
 clarinets.append(Soprano_Clarinet())
 clarinets.append(Bass_Clarinet())
 
-##################################################
-# saxophones
+#--------------------------------------------------
+# saxophones:
 
 def Alto_Saxophone():
-	"""Returns a mingus.containers.Instrument with attributes assigned for an Eb Alto Saxophone 
-	provided with an additional attribute 'key'."""
-
+	
 	instr = Instrument()
 	instr.name = 'Alto Saxophone'
 	instr.key  = 'Eb'
@@ -99,13 +92,11 @@ def Alto_Saxophone():
 
 saxophones.append(Alto_Saxophone())
 
-##################################################
-# flutes
+#--------------------------------------------------
+# flutes:
 
 def Flute():
-	"""Returns a mingus.containers.Instrument with attributes assigned for a Flute provided with 
-	an additional attribute 'key'."""
-
+	
 	instr = Instrument()
 	instr.name = 'Flute'
 	instr.key  = 'C'
@@ -115,13 +106,11 @@ def Flute():
 
 flutes.append(Flute())
 
-##################################################
-# violins
+#--------------------------------------------------
+# violins:
 
 def Violin():
-	"""Returns a mingus.containers.Instrument with attributes assigned for a Violin provided with 
-	an additional attribute 'key'."""
-
+	
 	instr = Instrument()
 	instr.name = 'Violin'
 	instr.key  = 'C'
@@ -131,10 +120,8 @@ def Violin():
 
 violins.append(Violin())
 
-##################################################
-
-##################################################
-# instruments
+#--------------------------------------------------
+# instruments:
 
 woodwinds 	= {'Clarinets': clarinets, 'Saxophones': saxophones, 'Flutes': flutes}
 strings 	= {'Violins': violins}

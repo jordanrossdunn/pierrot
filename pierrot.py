@@ -1,43 +1,44 @@
 #!/usr/bin/python
 
 from pcsets.pcset 	import *
-from pcsets.pcops 	import *
-from pcsets.catalog import *
-from pcsets.noteops import *
+#from pcsets.pcops 	import *
+#from pcsets.catalog import *
+#from pcsets.noteops import *
 
 import mingus.core.value
 
 import string
 from fractions import Fraction
 
-from rhythms 		import *
-from instruments	import *
+from rhythms 	 import *
+from instruments import *
+from composer	 import *
 
 """documentatioin/summary"""
 
+#--------------------------------------------------
 # materials for the composition:
+
 primary_pc_sets = []	# list of primary pitch-class sets
 primary_rhythms = []	# list of primary rhythms
 ensemble = []			# list of instruments in the ensemble
-catalog = SetCatalog() 	# the catalog of all pitch-class sets
 
-width = 100	#print width	
+print_width = 100	
 
-##################################################
+#--------------------------------------------------
+# introduction:
 
 print "\n"
-print "=" * width
-print string.center(" Welcome to Pierrot ", width, "|")
-#print "\n"
-print "=" * width
+print "=" * print_width
+print string.center(" Welcome to Pierrot ", print_width, "|")
+print "=" * print_width
 
 print "\nWhat are the materials for the composition?"
 
-##################################################
+#--------------------------------------------------
+# pitch-class set input:
 
-# pitch-class set input
-
-print "\n" + string.center(" Primary Pitch-Class Sets ", width, "~")
+print "\n" + string.center(" Primary Pitch-Class Sets ", print_width, "~")
 
 while True:
 
@@ -111,7 +112,7 @@ while True:
 	# display current primary set collection data
 	print "\n" + string.ljust("#", 5) + string.ljust("Normal Form", 25),
 	print string.ljust("Prime Form", 25) + string.ljust("Interval Vector", 25)
-	print "-" * int(width)
+	print "-" * int(print_width)
 	for index, item in enumerate(primary_pc_sets):
 		print string.ljust(str(index+1), 5) + string.ljust(str(item), 25),
 		print string.ljust(str(item.prime()), 25) + string.ljust(str(item.ivec()), 25)
@@ -125,11 +126,10 @@ while True:
 	else:
 		continue
 
-##################################################
+#--------------------------------------------------
+# rhythm input:
 
-# rhythm input
-
-print "\n" + string.center(" Primary Rhythms ", width, "~")
+print "\n" + string.center(" Primary Rhythms ", print_width, "~")
 
 actions = 	[
 				'Use base value',
@@ -150,16 +150,16 @@ while True:
 	while True:
 
 		if len(rhythm) > 0:
-			# print rhythm progress
+			# display rhythm progress
 			print "\nRhythm " + str(len(primary_rhythms)+1) + ":"
-			print "-" * int(width)
+			print "-" * int(print_width)
 			for item in rhythm[:-1]:
 				print str(item) + ",",
 			print str(rhythm[-1])
 
 		# select a base value
 		print "\n" + string.ljust("#", 5) + string.ljust("Value", 15)
-		print "-" * int(width/3)
+		print "-" * int(print_width/3)
 		for index, item in enumerate(mingus.core.value.base_values):
 			value_as_ratio = str(Fraction(1.0/item))
 			print string.ljust(str(index+1), 5) + string.ljust(value_as_ratio, 15)
@@ -174,7 +174,7 @@ while True:
 		# select an action
 		base_index = mingus.core.value.base_values.index(value)
 		print "\n" + string.ljust("#", 5) + string.ljust("Action", 15)
-		print "-" * int(width/3)
+		print "-" * int(print_width/3)
 		for index, item in enumerate(actions):
 			print string.ljust(str(index+1), 5) + string.ljust(item, 15) 
 		
@@ -186,29 +186,29 @@ while True:
 		print ""
 		# option actions
 		if   action == 0:
-			# use base value
+			# base value
 			rhythm.append(new_unit('', value))
 		elif action == 1:
-			# make single dotted
+			# single dotted
 			rhythm.append(new_unit('', mingus.core.value.dots(value)))
 		elif action == 2:
-			# make double dotted
+			# double dotted
 			rhythm.append(new_unit('', mingus.core.value.dots(value, 2)))
 		elif action == 3:
-			# make triple dotted
+			# triple dotted
 			rhythm.append(new_unit('', mingus.core.value.dots(value, 3)))
 		elif action == 4:
-			# make triplet
+			# triplet
 			for count in range(3):
 				part = str(count+1) + "/3: "
 				rhythm.append(new_unit(part, mingus.core.value.base_triplets[base_index]))
 		elif action == 5:
-			# make quintuplet
+			# quintuplet
 			for count in range(5):
 				part = str(count+1) + "/5: "
 				rhythm.append(new_unit(part, mingus.core.value.base_quintuplets[base_index]))
 		elif action == 6:
-			# make septuplet
+			# septuplet
 			for count in range(7):
 				part = str(count+1) + "/7: "
 				rhythm.append(new_unit(part, mingus.core.value.base_septuplets[base_index]))
@@ -217,14 +217,16 @@ while True:
 		again = raw_input("\nEnter another note value? (y/n): ")
 		while again != "y" and again != "n":
 			again = raw_input("Enter another note value? (y/n): ")
+
 		if again == 'n':
-			# rhythm construction complete
+			# rhythm complete
 			primary_rhythms.append(rhythm)
 			rhythm = []
-			# print primary_rhythms
+
+			# display primary_rhythms
 			for index, primary_rhythm in enumerate(primary_rhythms):
 				print "\nPrimary Rhythm " + str(index+1) + ":"
-				print "-" * int(width)
+				print "-" * int(print_width)
 				for item in primary_rhythm[:-1]:
 					print str(item) + ",",
 				print str(primary_rhythm[-1])
@@ -241,11 +243,10 @@ while True:
 	else:
 		continue
 
-##################################################
+#--------------------------------------------------
+# instrumentation input:
 
-# instrumentation input
-
-print "\n" + string.center(" Instrumentation ", width, "~")
+print "\n" + string.center(" Instrumentation ", print_width, "~")
 
 while True:
 
@@ -254,7 +255,7 @@ while True:
 
 	# select instrument category
 	print "\n" + string.ljust("#", 5) + string.ljust("Category", 15)
-	print "-" * int(width/3)
+	print "-" * int(print_width/3)
 	for index, title in enumerate(get_instrument_categories()):
 		print string.ljust(str(index+1), 5) + string.ljust(title, 15)
 		keys.append(title)
@@ -269,7 +270,7 @@ while True:
 
 	# select instrument family
 	print "\n" + string.ljust("#", 5) + string.ljust("Family", 15)
-	print "-" * int(width/3)
+	print "-" * int(print_width/3)
 	for index, family in enumerate(get_instrument_families(category)):
 		print string.ljust(str(index+1), 5) + string.ljust(family, 15)
 		keys.append(family)
@@ -293,24 +294,21 @@ while True:
 
 	ensemble.append(instrument)
 
+	# display ensemble
 	print "\nEnsemble:\n"
 	print string.ljust('#', 5) + string.ljust('Name', 20) + string.ljust('Key', 10) + string.ljust('Range', 15)
 	print '-' * 50
 	for index, instr in enumerate(ensemble):
 		print string.ljust(str(index+1), 5) + string.ljust(instr.name, 20) + string.ljust(instr.key, 10) + string.ljust(str(instr.range), 15)
 
-
-	# notes:
-	# need to add an option to start selection over!!!
-	# for multiple instrument additions check that families are not repeated?
-	
 	#again = raw_input("\nAdd another instrument? (y/n): ")
 	break
 
-##################################################
+#--------------------------------------------------
+# composition parameter input:
 
-# to be added later: basic parameter input (tempo, space, ...), and shape/form input section  
+#--------------------------------------------------
+# compose and generate midi file:
 
-##################################################
-
-# compose and generate midi file
+print("\n")
+compose(primary_pc_sets, primary_rhythms, ensemble)
