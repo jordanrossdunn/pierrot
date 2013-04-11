@@ -8,6 +8,8 @@ from mingus.core.value import *
 from rhythms 	 import *
 from instruments import *
 
+from math import floor
+
 import random
 
 #--------------------------------------------------
@@ -15,7 +17,7 @@ import random
 catalog = SetCatalog()
 
 #--------------------------------------------------
-# pitch-class set helper functions:
+# composition helper functions:
 
 def ctvec(pc_set):
 	
@@ -140,6 +142,38 @@ def cadential_progressive_successive_neighbor(pc_set):
 
 #--------------------------------------------------
 
+class Pc_sequence():
+	
+	def __init__(self, pc_set, repeat_chance, repeat_attempts):
+		assert isinstance(pc_set, PcSet)
+		assert isinstance(float(repeat_chance), float)
+		assert repeat_chance >= 0 and repeat_chance <= 100
+		assert isinstance(repeat_attempts, int)
+
+		self.sequence = []
+		self.sequence.extend(pc_set)
+
+		for attempt in range(repeat_attempts):
+			for index in range(len(pc_set)):
+				if (random.random() * 100) <= repeat_chance:
+					self.sequence.append(self.sequence[index])
+
+		random.shuffle(self.sequence)
+		self.repeat_chance = repeat_chance
+
+	def reshuffle(self):
+		random.shuffle(self.sequence)
+
+	def completed(self):
+		return len(self.sequence) == 0
+
+	def next(self):
+		assert not self.completed()
+		return self.sequence.pop(0)
+
+
+#--------------------------------------------------
+
 def compose(primary_pc_sets, primary_rhythms, ensemble):
 
 	for index, item in enumerate(primary_pc_sets):
@@ -155,8 +189,8 @@ def compose(primary_pc_sets, primary_rhythms, ensemble):
 	cycle = Rhythm_cycle(primary_rhythms[0])
 	# cycle.display()
 	cycle.set_outlet_chance(1, 25)
-	cycle.set_outlet_chance(2, 25)
-	cycle.set_negate_chance(0, 50)
+	cycle.set_tieVal_chance(0, 70)
+	cycle.set_negate_chance(0, 20)
 	cycle.display()
 
 	print "next unit: "

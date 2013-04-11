@@ -23,6 +23,7 @@ def get_values():
 	return values
 
 def is_in_values(candidate):
+
 	for key, item in get_values().iteritems():
 		for element in item:
 			if candidate == element:
@@ -30,6 +31,7 @@ def is_in_values(candidate):
 	return False
 
 def get_value_name(value):
+
 	for key, item in get_values().iteritems():
 		for index, element in enumerate(item):
 			if value == element:
@@ -41,6 +43,7 @@ def get_value_name(value):
 # rhythm unit:
 
 class Unit():
+
 	def __init__(self, value, is_rest):
 		assert is_in_values(value)
 		assert isinstance(is_rest, bool)
@@ -100,12 +103,19 @@ class Rhythm_cycle():
 		self.__count = len(rhythm)
 		self.__outlet_chance = []
 		self.__negate_chance = []
+		self.__tieVal_chance = []
 		for i in range(self.__count):
 			self.__outlet_chance.append(0)
 			self.__negate_chance.append(0)
+			self.__tieVal_chance.append(0)
 
 	def get_index(self):
 		return self.__index
+
+	def __advance_index(self):
+		self.__index += 1
+		if self.__index not in range(self.__count):
+			self.__index = 0
 
 	def get_next_unit(self):
 		if (random.random() * 100) <= self.__outlet_chance[self.__index]:
@@ -116,18 +126,22 @@ class Rhythm_cycle():
 		if (random.random() * 100) <= self.__negate_chance[self.__index]:
 			next_unit = next_unit.negate()
 
+		if ((random.random() * 100) <= self.__tieVal_chance[self.__index]) and not next_unit.is_rest():
+			value = next_unit.get_value()
+			self.__advance_index()
+			value = mingus.core.value.add(value, next_unit.get_value())
+			next_unit = Unit(value, False)
+
 		print "next: (index = " + str(self.__index) + ") " + str(next_unit)
-		self.__index += 1
-		if self.__index not in range(self.__count):
-			self.__index = 0
+
+		self.__advance_index()
+
 		return next_unit
 
 	def __is_safe_outlet(self, position):
-		
 		value = self.__rhythm[position].get_value()
 		values = get_values()
 		previous_safe_position = 0
-
 
 		if position == 0:
 			return True
@@ -163,10 +177,16 @@ class Rhythm_cycle():
 		assert chance >= 0 and chance <= 100
 		self.__negate_chance[position] = chance
 
+	def set_tieVal_chance(self, position, chance):
+		assert position in range(self.__count) 
+		assert chance >= 0 and chance <= 100
+		self.__tieVal_chance[position] = chance
+
 	def display(self):
 		for index, unit in enumerate(self.__rhythm):
 			print "note/rest value: " + str(unit.get_value())
 			print "value is rest: " + str(unit.is_rest())
 			print "outlet chance: " + str(self.__outlet_chance[index]) + "%"
 			print "negate chance: " + str(self.__negate_chance[index]) + "%"
+			print "tieVal chance: " + str(self.__tieVal_chance[index]) + "%"
 
