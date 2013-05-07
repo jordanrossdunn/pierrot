@@ -239,21 +239,33 @@ def compose(primary_pc_sets, rhythm_cycles, ensemble, meter, bpm, stability, rep
 	section_length = list()
 
 	# section 1:
+	"""
 	for index, primary_pc_set in enumerate(primary_pc_sets):
 		spectrum = transposition_spectrum(primary_pc_set)
 		contrast = index
 		if contrast not in range(len(spectrum)):
-			contrast = len(spectrum)-1
+			contrast = len(spectrum)-1 
 		pc_set_progression.extend(neighbor_by_contrast(primary_pc_set, contrast))
+	section_length.append(len(pc_set_progression))
+	"""
+
+	for index in range(len(primary_pc_sets)):
+		for primary_pc_set in primary_pc_sets[0:index]:
+			spectrum = transposition_spectrum(primary_pc_set)
+			contrast = index
+			if contrast not in range(len(spectrum)):
+				contrast = len(spectrum)-1 
+			pc_set_progression.extend(neighbor_by_contrast(primary_pc_set, contrast))
 	section_length.append(len(pc_set_progression))
 
 	# section 2:
 	for index, primary_pc_set in enumerate(primary_pc_sets):
+		if index == len(primary_pc_sets)-1: break
 		spectrum = transposition_spectrum(primary_pc_set)
 		contrast = index
 		if contrast not in range(len(spectrum)):
 			contrast = len(spectrum)-1
-		pc_set_progression.extend(palindrome_successive_neighbor_by_contrast(primary_pc_set, contrast, index+1))
+		pc_set_progression.extend(palindrome_successive_neighbor_by_contrast(primary_pc_set, contrast, len(primary_pc_sets)-index))
 	section_length.append(len(pc_set_progression))
 
 	# section 3:
@@ -266,13 +278,13 @@ def compose(primary_pc_sets, rhythm_cycles, ensemble, meter, bpm, stability, rep
 	# section 4:
 	for index, primary_pc_set in enumerate(reversed(primary_pc_sets)):
 		spectrum = transposition_spectrum(primary_pc_set)
-		contrast = index
+		contrast = len(spectrum)-(1+index)
 		if contrast not in range(len(spectrum)):
-			contrast = len(spectrum)-1
+			contrast = 0
 		pc_set_progression.extend(neighbor_by_contrast(primary_pc_set, contrast))
 	section_length.append(len(pc_set_progression))
 
-	print "\nSub progression lengths:"
+	print "\nSection lengths:"
 	for item in section_length:
 		print str(item)
 
@@ -348,7 +360,7 @@ def compose(primary_pc_sets, rhythm_cycles, ensemble, meter, bpm, stability, rep
 				track.bars[-1].set_meter(meter)
 
 			if unit.is_rest():
-				print "rest"
+				print "unit is rest"
 				if not track.bars[-1].place_rest(unit.get_value()):
 					print "not enough room in bar"
 					if track.bars[-1].space_left() == 0:
@@ -370,7 +382,7 @@ def compose(primary_pc_sets, rhythm_cycles, ensemble, meter, bpm, stability, rep
 								track.bars[-1].place_rest(difference)
 								break
 			else:
-				print "note"
+				print "unit is note"
 				note = orchestrator.next()
 				if not first_note:
 					first_note = note

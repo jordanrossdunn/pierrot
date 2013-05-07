@@ -40,40 +40,38 @@ indexed at the beginning of each phrase."""
 # rhythm1:
 rhythm1 = list()
 
-rhythm1.append(Unit(dots(4), False))
-rhythm1.append(Unit(8, False))
-rhythm1.append(Unit(2, False))
+rhythm1.append(Unit(4, False))
+rhythm1.append(Unit(4, False))
+rhythm1.append(Unit(4, False))
+rhythm1.append(Unit(4, False))
 
 rhythm1.append(Unit(4, False))
 rhythm1.append(Unit(4, False))
-rhythm1.append(Unit(4, False))
 rhythm1.append(Unit(2, False))
-
-rhythm1.append(Unit(4, False))
-rhythm1.append(Unit(4, False))
-rhythm1.append(Unit(2, True))
 
 # rhythm2:
 rhythm2 = list()
 
-rhythm2.append(Unit(1, False))
-rhythm2.append(Unit(4, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(triplet(8), False))
-rhythm2.append(Unit(triplet(8), False))
-rhythm2.append(Unit(triplet(8), False))
-
-rhythm2.append(Unit(4, False))
 rhythm2.append(Unit(8, True))
 rhythm2.append(Unit(8, False))
 rhythm2.append(Unit(8, False))
 rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(4, False))
+rhythm2.append(Unit(8, False))
+rhythm2.append(Unit(8, False))
+rhythm2.append(Unit(8, False))
+rhythm2.append(Unit(8, False))
 
-rhythm2.append(Unit(2, False))
+rhythm1.append(Unit(4, False))
+rhythm2.append(Unit(8, False))
+rhythm2.append(Unit(8, False))
+rhythm2.append(Unit(8, False))
+rhythm2.append(Unit(8, False))
+rhythm2.append(Unit(8, False))
+rhythm2.append(Unit(8, False))
+
 rhythm2.append(Unit(4, False))
 rhythm2.append(Unit(4, True))
+rhythm2.append(Unit(2, False))
 
 
 # append rhythms to primary_rhythms:
@@ -94,19 +92,17 @@ for rhythm in primary_rhythms:
 # edit/set rhythm cycles:
 
 # edit cycle for rhythm1 
-rhythm_cycles[0].set_negate_chance(6, 33)
-
+rhythm_cycles[0].set_negate_chance(6, 50)
 rhythm_cycles[0].set_outlet_chance(4, 55)
-
-rhythm_cycles[1].set_tieVal_chance(0, 25)
 
 # edit cycle for rhythm1
 rhythm_cycles[1].set_negate_chance(0, 50)
 rhythm_cycles[1].set_negate_chance(11, 50)
 
-rhythm_cycles[1].set_outlet_chance(5, 66)
+rhythm_cycles[1].set_outlet_chance(8, 66)
+rhythm_cycles[1].set_outlet_chance(15, 33)
 
-rhythm_cycles[1].set_tieVal_chance(7, 50)
+rhythm_cycles[1].set_tieVal_chance(8, 50)
 
 #--------------------------------------------------
 """ensemble (instrumentation)"""
@@ -124,11 +120,11 @@ ensemble.append(Piano())
 # basic parameters
 
 meter = 4, 4
-bpm = 220
-stability = 75
-repeat_chance = 33
-repeat_attempts = 4
-repeat_loops = 1
+bpm = 500
+stability = 66
+repeat_chance = 100
+repeat_attempts = 3
+repeat_loops = 0
 repetitions = 0
 filename = "example01"
 filename = "./output/" + filename + ".mid"

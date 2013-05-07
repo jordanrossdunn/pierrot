@@ -22,7 +22,7 @@ class Pc_sequence():
 		assert repeat_loops in range(0, 101) 
 
 		self.sequence = list()
-		self.sequence.extend(pc_set)
+		#self.sequence.extend(pc_set)
 
 		self.pc_set = pc_set
 		self.repeat_chance = repeat_chance
@@ -43,15 +43,15 @@ class Pc_sequence():
 		pc_set, repeat_chance, and repeat_attempts attributes."""
 
 		self.sequence = list()
-		self.sequence.extend(self.pc_set)
 
 		for times in range(self.repeat_loops+1):
-			for index in range(len(self.pc_set)):
+			shuffled = list()
+			shuffled.extend(self.pc_set)
+			random.shuffle(shuffled)
+			for index in range(len(shuffled)):
 				for attempts in range(self.repeat_attempts+1):
 					if random.random()*100 <= self.repeat_chance:
-						self.sequence.append(self.sequence[index])
-
-		random.shuffle(self.sequence)
+						self.sequence.append(shuffled[index])
 
 	def completed(self):
 		"""Returns True if/when the object's sequence has been completed
