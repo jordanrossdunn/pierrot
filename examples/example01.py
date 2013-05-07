@@ -2,6 +2,7 @@
 
 # insert the parent directory to the path
 import sys
+import os
 sys.path.insert(0, '../')
 
 # import the necessary modules
@@ -131,6 +132,8 @@ repeat_loops = 1
 repetitions = 0
 filename = "example01"
 filename = "./output/" + filename + ".mid"
+if not os.path.exists("./output"):
+    os.makedirs("./output")
 
 #--------------------------------------------------
 # compose

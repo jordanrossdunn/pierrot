@@ -706,6 +706,8 @@ filename = filename.replace(' ','_')
 filename = filename + ".mid"
 print "Using filename: " + filename
 # direct to pierrot output subdirectory
+if not os.path.exists("./output"):
+    os.makedirs("./output")
 filename = "./output/" + filename
 print "\nSaving output to: " + filename
 
