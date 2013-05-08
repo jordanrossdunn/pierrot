@@ -22,6 +22,7 @@ flutes = list()
 
 # strings:
 violins = list()
+plucked_strings = list()
 
 # percussion
 pitched_percussion = list()
@@ -222,6 +223,24 @@ def Contrabass():
 violins.append(Violin())
 violins.append(Viola())
 violins.append(Cello())
+violins.append(Contrabass())
+
+#--------------------------------------------------
+# plucked_strings:
+
+def Orchestral_Harp():
+	"""Defines and returns an orchestral harp midi instrument (an instance of MidiInstrument())"""
+
+	instr = MidiInstrument()
+	instr.name = 'Orchestral Harp'
+	instr.key  = 'C'
+	instr.clef = 'Treble & Bass'
+	instr.set_range(tuple([Note('C', 1), Note('G', 7)]))
+	instr.instrument_nr = instr.names.index('Orchestral Harp')
+	return instr
+
+plucked_strings.append(Orchestral_Harp())
+
 
 #--------------------------------------------------
 # keyboards:
@@ -233,7 +252,7 @@ def Piano():
 	instr.name = 'Piano'
 	instr.key  = 'C'
 	instr.clef = 'Treble & Bass'
-	instr.set_range(tuple([Note('F', 0), Note('B', 8)]))
+	instr.set_range(tuple([Note('A', 0), Note('C', 8)]))
 	instr.instrument_nr = instr.names.index('Acoustic Grand Piano')
 	return instr
 
@@ -253,13 +272,25 @@ def Vibraphone():
 	instr.instrument_nr = instr.names.index('Vibraphone')
 	return instr
 
+def Marimba():
+	"""Defines and returns a marimba midi instrument (an instance of MidiInstrument())"""
+
+	instr = MidiInstrument()
+	instr.name = 'Marimba'
+	instr.key  = 'C'
+	instr.clef = 'Treble & Bass'
+	instr.set_range(tuple([Note('C', 2), Note('C', 7)]))
+	instr.instrument_nr = instr.names.index('Marimba')
+	return instr
+
 pitched_percussion.append(Vibraphone())
+pitched_percussion.append(Marimba())
 
 #--------------------------------------------------
 # instruments:
 
 woodwinds 	= {'Clarinets': clarinets, 'Saxophones': saxophones, 'Flutes': flutes}
-strings 	= {'Violins': violins}
+strings 	= {'Violins': violins, 'Plucked_strings': plucked_strings}
 percussion 	= {'Pitched Percussion': pitched_percussion, 'Keyboards': keyboards} 
 
 instruments = {'Woodwinds': woodwinds, 'Strings': strings, 'Percussion': percussion}

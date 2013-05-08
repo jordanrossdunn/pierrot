@@ -76,9 +76,33 @@ os.system(['clear', 'cls'][os.name == 'nt'])
 
 print "\n" + string.center(" Primary Pitch-Class Sets ", print_width, "~")
 
+pitch_classes = list()
+pitch_classes.extend(range(0, 10))
+for index, item in enumerate(pitch_classes): pitch_classes[index] = str(item)
+pitch_classes.extend(['A', 'B'])
+
+note_names = list()
+for index, item in enumerate(pitch_classes): note_names.append(notes(item))
+
+print """
+Note: Although an interval (a pair of pitch-classes) does not technically constitute a pitch-class
+set (3-11 pitch-classes), intervals are also admissible."""
+
 while True:
 
+	# display guide
+	print "\n" + string.center(" Pitch-Class / Note-Name Guide ", 45, "-")
+	print "-" * (45)
+	for index, item in enumerate(pitch_classes):
+		if item == pitch_classes[-1]: print string.ljust(item, 3)
+		else: print string.ljust(item, 3),
+	for index, item in enumerate(note_names):
+		if index == len(note_names)-1: print string.ljust(item, 3)
+		else: print string.ljust(item, 3),
+	print "-" * (45)
+
 	raw  = raw_input("\nEnter pitch-class set " + str(len(primary_pc_sets)+1) + ": ")
+	if raw == 'q': break
 
 	# check for valid characters
 	temp = raw
@@ -91,7 +115,7 @@ while True:
 	temp = str(PcSet(raw))
 
 	# check for valid pitch-class set entry
-	if len(str(temp)) < 3:
+	if len(str(temp)) < 2:
 		print "\nInvalid entry!"
 		print "\nPlease enter between 3 and 12 unique pitch-classes for each set."
 		continue;
@@ -110,12 +134,16 @@ while True:
 
 	# put the set into normal form
 	temp = PcSet(raw).normal()
-
 	# compensate for bugs in normal()
-	if   len(str(temp)) == 12:
-		temp = (temp.zero()).transpose(member[0])
-	elif len(str(temp)) == 2 and (member[1]-member[0])%12 == 6:
+	if len(str(temp)) == 2 and str(temp.prime()) == str(PcSet('06')):
+		# it is a tritone interval
 		temp = temp.transpose(6)
+	elif str(temp.prime()) == str(PcSet('048')):
+		# it is an augmented triad
+		temp = temp.transpose(-4)
+	elif len(str(temp)) == 12:
+		# it is the full chromatic set
+		temp = (temp.zero()).transpose(member[0])	
 
 	# check against previous input for equivalent normal and/or prime forms
 	equivalent_normal = list()
@@ -302,6 +330,27 @@ while True:
 				part = str(count+1) + "/7: "
 				rhythm.append(new_unit(part, mingus.core.value.base_septuplets[base_index]))
 
+		# display primary_rhythms
+		os.system(['clear', 'cls'][os.name == 'nt'])
+		print "\n" + string.center(" Primary Rhythms ", print_width, "~")
+		for index, primary_rhythm in enumerate(primary_rhythms):
+			print "\nPrimary Rhythm " + str(index+1) + ":"
+			print "-" * int(print_width)
+			for item in primary_rhythm[:-1]:
+				print str(item) + ",",
+			print str(primary_rhythm[-1])
+
+		# display rhythm progress
+		if len(rhythm) > 0:
+			print "\nRhythm " + str(len(primary_rhythms)+1) + ":"
+			print "-" * int(print_width)
+			for item in rhythm[:-1]:
+				print str(item) + ",",
+			print str(rhythm[-1])
+		else:
+			print "\nRhythm " + str(len(primary_rhythms)+1) + ":"
+			print "-" * int(print_width)
+
 		# continue or break?
 		again = raw_input("\nEnter another note value? (y/n): ")
 		while again != "y" and again != "n":
@@ -397,6 +446,7 @@ if choice == 'y':
 				print "\nCycle " + str(index+1) + ":"
 				rhythm_cycles[-1].display()
 
+
 		if len(rhythm_cycles) > 1:
 			# select rhythm cycles to edit
 			print "\n# of rhythm cycles = " + str(len(rhythm_cycles))
@@ -415,7 +465,7 @@ if choice == 'y':
 			# display the selected rhythm cycle
 			os.system(['clear', 'cls'][os.name == 'nt'])
 			print "\n" + string.center(" Rhythm Cycle Settings ", print_width, "~")
-			print "\nSelected Rhythm Cycle:"
+			if len(rhythm_cycles) > 1: print "\nSelected Rhythm Cycle:"
 			print "\nCycle " + str(index+1) + ":" 
 			rhythm_cycles[index].display()
 
@@ -524,11 +574,14 @@ if choice == 'y':
 				print "\n" + string.center(" Rhythm Cycle Settings ", print_width, "~")
 				break
 
-		choice = raw_input("\nEdit another rhythm cycle? (y/n): ")
-		while choice != 'y' and choice != 'n':
-			choice = raw_input("Edit another rhythm cycle? (y/n): ")
-		if choice == 'y':
-			continue
+		if len(rhythm_cycles) > 1:
+			choice = raw_input("\nEdit another rhythm cycle? (y/n): ")
+			while choice != 'y' and choice != 'n':
+				choice = raw_input("Edit another rhythm cycle? (y/n): ")
+			if choice == 'y':
+				continue
+			else:
+				break
 		else:
 			break
 
@@ -618,8 +671,8 @@ while not beat_value.isdigit() or int(beat_value) not in {1, 2, 4, 8, 16, 32}:
 meter = int(beat_count), int(beat_value)
 print "\nMeter entered: " + str(beat_count) + "/" + str(beat_value) + " - " + str(meter)
 
-os.system(['clear', 'cls'][os.name == 'nt'])
-print "\n" + string.center(" Composition Parameters ", print_width, "~")
+#os.system(['clear', 'cls'][os.name == 'nt'])
+#print "\n" + string.center(" Composition Parameters ", print_width, "~")
 
 # bpm entry:
 # print tempo marking to bpm guide
@@ -648,7 +701,9 @@ os.system(['clear', 'cls'][os.name == 'nt'])
 print "\n" + string.center(" Composition Parameters ", print_width, "~")
 
 print """Stability
-\nThe stability value controls the likelihood of a melodic leap greater than an octave.
+\nThe stability value controls the likelihood of a melodic leap to be less than or equal
+\nto an octave and the likelihood of avoiding the general extreme upper and lower registers
+\nof an instrument's range.
 \nThe overall melodic linearity/angularity of the composition is affected by this value."""
 
 raw = raw_input("\nEnter stability value (0-100): ")
@@ -681,9 +736,9 @@ while (not raw.isdigit()) or (int(raw) not in range(0, 101)):
 repeat_loops = int(raw)
 
 # repeat entry (da capo count):
-raw = raw_input("\nEnter # of repetitions: ")
+raw = raw_input("\nEnter # of total repetitions of composition: ")
 while (not raw.isdigit()) or (int(raw) not in range(0, 101)):
-	raw = raw_input("\nEnter # of repetitions: ")
+	raw = raw_input("\nEnter # of total repetitions of composition: ")
 repetitions = int(raw)
 
 #title entry:

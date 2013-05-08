@@ -15,9 +15,9 @@ from mingus.containers.Bar import *
 # primary_pc_sets is a list of PcSet objects
 primary_pc_sets = list()
 
-pcset1 = PcSet('059')
-pcset2 = PcSet('26A')
-pcset3 = PcSet('3456')
+pcset1 = PcSet('06')
+pcset2 = PcSet('04')
+pcset3 = PcSet('6A2')
 
 primary_pc_sets.append(pcset1)
 primary_pc_sets.append(pcset2)
@@ -41,36 +41,13 @@ indexed at the beginning of each phrase."""
 rhythm1 = list()
 
 rhythm1.append(Unit(4, False))
-rhythm1.append(Unit(4, False))
-rhythm1.append(Unit(4, False))
-rhythm1.append(Unit(4, False))
-
-rhythm1.append(Unit(4, False))
-rhythm1.append(Unit(4, False))
-rhythm1.append(Unit(2, False))
 
 # rhythm2:
 rhythm2 = list()
 
-rhythm2.append(Unit(8, True))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
 rhythm2.append(Unit(8, False))
 rhythm2.append(Unit(8, False))
 
-rhythm1.append(Unit(4, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-
-rhythm2.append(Unit(4, False))
-rhythm2.append(Unit(4, True))
 rhythm2.append(Unit(2, False))
 
 
@@ -92,17 +69,16 @@ for rhythm in primary_rhythms:
 # edit/set rhythm cycles:
 
 # edit cycle for rhythm1 
-rhythm_cycles[0].set_negate_chance(6, 50)
-rhythm_cycles[0].set_outlet_chance(4, 55)
+rhythm_cycles[0].set_negate_chance(0, 20)
 
 # edit cycle for rhythm2
-rhythm_cycles[1].set_negate_chance(0, 50)
-rhythm_cycles[1].set_negate_chance(11, 50)
+rhythm_cycles[1].set_negate_chance(0, 20)
+rhythm_cycles[1].set_negate_chance(1, 20)
+rhythm_cycles[1].set_negate_chance(2, 66)
 
-rhythm_cycles[1].set_outlet_chance(8, 66)
-rhythm_cycles[1].set_outlet_chance(15, 33)
+rhythm_cycles[1].set_outlet_chance(2, 75)
 
-rhythm_cycles[1].set_tieVal_chance(8, 50)
+rhythm_cycles[1].set_tieVal_chance(0, 33)
 
 #--------------------------------------------------
 """ensemble (instrumentation)"""
@@ -114,19 +90,19 @@ ensemble = list()
 # you may use the instruments dict for a dictionary of MidiInstruments
 # or call print_instruments() to print a display of available MidiIntrument
 
-ensemble.append(Orchestral_Harp())
+ensemble.append(Marimba())
 
 #--------------------------------------------------
 # basic parameters
 
-meter = 4, 4
-bpm = 500
-stability = 33
-repeat_chance = 25
-repeat_attempts = 2
+meter = 5, 4
+bpm = 220
+stability = 50
+repeat_chance = 33
+repeat_attempts = 3
 repeat_loops = 2
 repetitions = 1
-filename = "example01"
+filename = "example03"
 filename = "./output/" + filename + ".mid"
 if not os.path.exists("./output"):
     os.makedirs("./output")

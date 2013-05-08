@@ -49,6 +49,7 @@ class Pc_sequence():
 			shuffled.extend(self.pc_set)
 			random.shuffle(shuffled)
 			for index in range(len(shuffled)):
+				self.sequence.append(shuffled[index])
 				for attempts in range(self.repeat_attempts+1):
 					if random.random()*100 <= self.repeat_chance:
 						self.sequence.append(shuffled[index])

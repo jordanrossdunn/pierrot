@@ -239,18 +239,8 @@ def compose(primary_pc_sets, rhythm_cycles, ensemble, meter, bpm, stability, rep
 	section_length = list()
 
 	# section 1:
-	"""
-	for index, primary_pc_set in enumerate(primary_pc_sets):
-		spectrum = transposition_spectrum(primary_pc_set)
-		contrast = index
-		if contrast not in range(len(spectrum)):
-			contrast = len(spectrum)-1 
-		pc_set_progression.extend(neighbor_by_contrast(primary_pc_set, contrast))
-	section_length.append(len(pc_set_progression))
-	"""
-
 	for index in range(len(primary_pc_sets)):
-		for primary_pc_set in primary_pc_sets[0:index]:
+		for primary_pc_set in primary_pc_sets[0:index+1]:
 			spectrum = transposition_spectrum(primary_pc_set)
 			contrast = index
 			if contrast not in range(len(spectrum)):
@@ -259,13 +249,12 @@ def compose(primary_pc_sets, rhythm_cycles, ensemble, meter, bpm, stability, rep
 	section_length.append(len(pc_set_progression))
 
 	# section 2:
-	for index, primary_pc_set in enumerate(primary_pc_sets):
-		if index == len(primary_pc_sets)-1: break
+	for index, primary_pc_set in enumerate(primary_pc_sets[0:-1]):
 		spectrum = transposition_spectrum(primary_pc_set)
 		contrast = index
 		if contrast not in range(len(spectrum)):
 			contrast = len(spectrum)-1
-		pc_set_progression.extend(palindrome_successive_neighbor_by_contrast(primary_pc_set, contrast, len(primary_pc_sets)-index))
+		pc_set_progression.extend(palindrome_successive_neighbor_by_contrast(primary_pc_set, contrast, len(primary_pc_sets[0:-1])-index))
 	section_length.append(len(pc_set_progression))
 
 	# section 3:
@@ -330,11 +319,6 @@ def compose(primary_pc_sets, rhythm_cycles, ensemble, meter, bpm, stability, rep
 
 		while not orchestrator.completed():
 
-			print "\ncount = " + str(count)
-			print "rhythm cycle # " + str(cur_rhythm_cycle)
-			print "section # " + str(cur_section)
-			print "section length = " + str(section_length[cur_section])
-
 			# select rhythm cycle
 			if index == len(pc_sequence)-1:
 				cycle = rhythm_cycles[cur_rhythm_cycle]
@@ -349,6 +333,11 @@ def compose(primary_pc_sets, rhythm_cycles, ensemble, meter, bpm, stability, rep
 					if cur_section == len(section_length):
 						cur_section = 0
 					cycle = rhythm_cycles[cur_rhythm_cycle]
+
+			print "\ncount = " + str(count)
+			print "rhythm cycle # " + str(cur_rhythm_cycle)
+			print "section # " + str(cur_section)
+			print "section length = " + str(section_length[cur_section])
 
 			unit = cycle.get_next_unit()
 

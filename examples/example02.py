@@ -15,13 +15,15 @@ from mingus.containers.Bar import *
 # primary_pc_sets is a list of PcSet objects
 primary_pc_sets = list()
 
-pcset1 = PcSet('059')
-pcset2 = PcSet('26A')
-pcset3 = PcSet('3456')
+pcset1 = PcSet('016')
+pcset2 = PcSet('06')
+pcset3 = PcSet('248A')
+pcset4 = PcSet('01')
 
 primary_pc_sets.append(pcset1)
 primary_pc_sets.append(pcset2)
 primary_pc_sets.append(pcset3)
+primary_pc_sets.append(pcset4)
 
 #--------------------------------------------------
 """primary rhythms"""
@@ -44,39 +46,46 @@ rhythm1.append(Unit(4, False))
 rhythm1.append(Unit(4, False))
 rhythm1.append(Unit(4, False))
 rhythm1.append(Unit(4, False))
+rhythm1.append(Unit(4, False))
+rhythm1.append(Unit(4, False))
+rhythm1.append(Unit(4, True))
 
 rhythm1.append(Unit(4, False))
 rhythm1.append(Unit(4, False))
-rhythm1.append(Unit(2, False))
+rhythm1.append(Unit(4, False))
+rhythm1.append(Unit(4, False))
+rhythm1.append(Unit(4, False))
+rhythm1.append(Unit(4, False))
+rhythm1.append(Unit(4, True))
+rhythm1.append(Unit(4, True))
+rhythm1.append(Unit(4, True))
 
 # rhythm2:
 rhythm2 = list()
 
-rhythm2.append(Unit(8, True))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-
-rhythm1.append(Unit(4, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
-rhythm2.append(Unit(8, False))
+rhythm2.append(Unit(1, False))
 
 rhythm2.append(Unit(4, False))
-rhythm2.append(Unit(4, True))
-rhythm2.append(Unit(2, False))
+rhythm2.append(Unit(dots(2), True))
+
+
+# rhythm3:
+rhythm3 = list()
+
+rhythm3.append(Unit(16, False))
+rhythm3.append(Unit(16, False))
+rhythm3.append(Unit(8, True))
+rhythm1.append(Unit(4, True))
+rhythm1.append(Unit(4, True))
+rhythm1.append(Unit(4, True))
+
+rhythm3.append(Unit(1, False))
 
 
 # append rhythms to primary_rhythms:
 primary_rhythms.append(rhythm1)
 primary_rhythms.append(rhythm2)
+primary_rhythms.append(rhythm3)
 
 
 #--------------------------------------------------
@@ -92,17 +101,22 @@ for rhythm in primary_rhythms:
 # edit/set rhythm cycles:
 
 # edit cycle for rhythm1 
-rhythm_cycles[0].set_negate_chance(6, 50)
-rhythm_cycles[0].set_outlet_chance(4, 55)
+rhythm_cycles[0].set_negate_chance(14, 50)
+
+rhythm_cycles[0].set_outlet_chance(7, 33)
 
 # edit cycle for rhythm2
-rhythm_cycles[1].set_negate_chance(0, 50)
-rhythm_cycles[1].set_negate_chance(11, 50)
+rhythm_cycles[1].set_negate_chance(0, 20)
 
-rhythm_cycles[1].set_outlet_chance(8, 66)
-rhythm_cycles[1].set_outlet_chance(15, 33)
+rhythm_cycles[1].set_outlet_chance(1, 66)
 
-rhythm_cycles[1].set_tieVal_chance(8, 50)
+# edit cycle for rhythm3
+
+rhythm_cycles[2].set_outlet_chance(2, 10)
+rhythm_cycles[2].set_outlet_chance(3, 25)
+
+rhythm_cycles[2].set_tieVal_chance(0, 33)
+rhythm_cycles[2].set_tieVal_chance(1, 33)
 
 #--------------------------------------------------
 """ensemble (instrumentation)"""
@@ -114,19 +128,19 @@ ensemble = list()
 # you may use the instruments dict for a dictionary of MidiInstruments
 # or call print_instruments() to print a display of available MidiIntrument
 
-ensemble.append(Orchestral_Harp())
+ensemble.append(Piano())
 
 #--------------------------------------------------
 # basic parameters
 
 meter = 4, 4
-bpm = 500
-stability = 33
-repeat_chance = 25
-repeat_attempts = 2
-repeat_loops = 2
-repetitions = 1
-filename = "example01"
+bpm = 120
+stability = 75
+repeat_chance = 20
+repeat_attempts = 1
+repeat_loops = 0
+repetitions = 0
+filename = "example02"
 filename = "./output/" + filename + ".mid"
 if not os.path.exists("./output"):
     os.makedirs("./output")
